@@ -8,7 +8,6 @@ import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -21,8 +20,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -50,10 +47,10 @@ public class MapsActivity extends FragmentActivity implements
     String mLastUpdateTime;
     GoogleMap googleMap;
     Marker mapMarker;
-    Circle redCircle;
+    /*Circle redCircle;
     Circle greenCircle;
     Circle blueCircle;
-    Circle yellowCircle;
+    Circle yellowCircle;*/
     Polygon redPoly;
     Polygon greenPoly;
 
@@ -191,7 +188,7 @@ public class MapsActivity extends FragmentActivity implements
             mapMarker.setTitle("Bala");
             //mapMarker.setSnippet(mLastUpdateTime + " " + mCurrentLocation.toString());
             mapMarker.setDraggable(true);
-            //mapMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.ic_media_play));
+            //mapMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.));
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude())));
             Log.d(TAG, "Marker added");
             TextView tvLatLng = (TextView) findViewById(R.id.textview2);
