@@ -19,10 +19,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
+
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -72,12 +74,7 @@ public class MapsActivity extends FragmentActivity implements
         googleMap.getUiSettings().setAllGesturesEnabled(true);
         googleMap.getUiSettings().setCompassEnabled(true);
         googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        //mapMarker.setDraggable(true);
-        //googleMap.setOnMarkerDragListener(this);
-        //googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder().tilt(45).build()));
-        //CameraPosition cameraPosition = new CameraPosition.Builder().tilt(45).bearing(90).build();
-        //googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        //googleMap.animateCamera(CameraUpdateFactory.);
+
     }
 
     @Override
@@ -116,6 +113,12 @@ public class MapsActivity extends FragmentActivity implements
         options.position(currentLatLng);
         mapMarker = googleMap.addMarker(options);
         mapMarker.setDraggable(true);
+        /*CameraPosition cameraPosition = new CameraPosition.Builder()
+                .bearing(90)                // Sets the orientation of the camera to east
+                .tilt(45)                   // Sets the tilt of the camera to 30 degrees
+                .build();                   // Creates a CameraPosition from the builder
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
+
         /*mCurrentLocation = googleMap.getMyLocation();
         if (mCurrentLocation != null) {
             LocationAddress locationAddress = new LocationAddress();
@@ -163,6 +166,11 @@ public class MapsActivity extends FragmentActivity implements
                 locationAddress.getAddressFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
                         getApplicationContext(), new GeocoderHandler());
             }
+            /*CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .bearing(90)                // Sets the orientation of the camera to east
+                    .tilt(45)                   // Sets the tilt of the camera to 30 degrees
+                    .build();                   // Creates a CameraPosition from the builder
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
         }
         else {
             onConnected(Bundle.EMPTY);
@@ -209,6 +217,11 @@ public class MapsActivity extends FragmentActivity implements
         //dragLocation.setLatitude(marker.getPosition().latitude);
         //dragLocation.setLongitude(marker.getPosition().longitude);
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(marker.getPosition().latitude, marker.getPosition().longitude)));
+        /*CameraPosition cameraPosition = new CameraPosition.Builder()
+                .bearing(90)                // Sets the orientation of the camera to east
+                .tilt(45)                   // Sets the tilt of the camera to 30 degrees
+                .build();                   // Creates a CameraPosition from the builder
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
         if (marker != null) {
             LocationAddress locationAddress = new LocationAddress();
             locationAddress.getAddressFromLocation(marker.getPosition().latitude, marker.getPosition().longitude,
@@ -230,7 +243,6 @@ public class MapsActivity extends FragmentActivity implements
             }
             TextView tvLocation = (TextView) findViewById(R.id.textview1);
             tvLocation.setText(locationAddress);
-            //
         }
     }
 }
