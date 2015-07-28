@@ -21,15 +21,17 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -52,6 +54,8 @@ public class MapsActivity extends FragmentActivity implements
     Circle greenCircle;
     Circle blueCircle;
     Circle yellowCircle;
+    Polygon redPoly;
+    Polygon greenPoly;
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
@@ -82,7 +86,7 @@ public class MapsActivity extends FragmentActivity implements
         googleMap.getUiSettings().setAllGesturesEnabled(true);
         googleMap.getUiSettings().setCompassEnabled(true);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        redCircle = googleMap.addCircle(new CircleOptions()
+        /*redCircle = googleMap.addCircle(new CircleOptions()
                 .center(new LatLng(13.130155, 80.213897))
                 .radius(50)
                 .strokeColor(Color.RED));
@@ -97,7 +101,13 @@ public class MapsActivity extends FragmentActivity implements
         yellowCircle = googleMap.addCircle(new CircleOptions()
                 .center(new LatLng(13.127848, 80.216972))
                 .radius(50)
-                .strokeColor(Color.YELLOW));
+                .strokeColor(Color.YELLOW));*/
+        redPoly = googleMap.addPolygon(new PolygonOptions()
+                                        .add(new LatLng(13.130125,80.213901),new LatLng(13.130165,80.213944),new LatLng(13.130015,80.214218),new LatLng(13.129932,80.214201)));
+        redPoly.setStrokeColor(Color.RED);
+        greenPoly = googleMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(13.129798, 80.214377), new LatLng(13.129840, 80.214446), new LatLng(13.129584, 80.214711), new LatLng(13.129524, 80.21467)));
+        greenPoly.setStrokeColor(Color.GREEN);
     }
 
     @Override
@@ -191,7 +201,7 @@ public class MapsActivity extends FragmentActivity implements
                 locationAddress.getAddressFromLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(),
                         getApplicationContext(), new GeocoderHandler());
             }
-            float[] calDistR = new float[2];
+            /*float[] calDistR = new float[2];
             float[] calDistG = new float[2];
             float[] calDistB = new float[2];
             float[] calDistY = new float[2];
@@ -215,12 +225,19 @@ public class MapsActivity extends FragmentActivity implements
             if(calDistY[0]<yellowCircle.getRadius()){
                 Toast.makeText(getBaseContext(), "YELLOW", Toast.LENGTH_LONG).show();
                 region.setText("YELLOW");
-            }
+            }*/
             /*CameraPosition cameraPosition = new CameraPosition.Builder()
                     .bearing(90)                // Sets the orientation of the camera to east
                     .tilt(45)                   // Sets the tilt of the camera to 30 degrees
                     .build();                   // Creates a CameraPosition from the builder
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
+            TextView region = (TextView) findViewById(R.id.textview3);
+            if(isPointInPolygon(mapMarker.getPosition(), (ArrayList<LatLng>) redPoly.getPoints())){
+                region.setText("RED");
+            }
+            if(isPointInPolygon(mapMarker.getPosition(), (ArrayList<LatLng>) greenPoly.getPoints())){
+                region.setText("GREEN");
+            }
         }
         else {
             onConnected(Bundle.EMPTY);
@@ -279,7 +296,8 @@ public class MapsActivity extends FragmentActivity implements
             locationAddress.getAddressFromLocation(marker.getPosition().latitude, marker.getPosition().longitude,
                     getApplicationContext(), new GeocoderHandler());
         }
-        float[] calDistR = new float[2];
+
+        /*float[] calDistR = new float[2];
         float[] calDistG = new float[2];
         float[] calDistB = new float[2];
         float[] calDistY = new float[2];
@@ -303,7 +321,15 @@ public class MapsActivity extends FragmentActivity implements
         if(calDistY[0]<yellowCircle.getRadius()){
             Toast.makeText(getBaseContext(), "YELLOW", Toast.LENGTH_LONG).show();
             region.setText("YELLOW");
+        }*/
+        TextView region = (TextView) findViewById(R.id.textview3);
+        if(isPointInPolygon(mapMarker.getPosition(), (ArrayList<LatLng>) redPoly.getPoints())){
+            region.setText("RED");
         }
+        if(isPointInPolygon(mapMarker.getPosition(), (ArrayList<LatLng>) greenPoly.getPoints())){
+            region.setText("GREEN");
+        }
+
     }
 
     private class GeocoderHandler extends Handler {
@@ -321,5 +347,28 @@ public class MapsActivity extends FragmentActivity implements
             TextView tvLocation = (TextView) findViewById(R.id.textview1);
             tvLocation.setText(locationAddress);
         }
+    }
+    private boolean LineIntersect(LatLng tap, LatLng vertA, LatLng vertB) {
+        double aY = vertA.latitude;
+        double bY = vertB.latitude;
+        double aX = vertA.longitude;
+        double bX = vertB.longitude;
+        double pY = tap.latitude;
+        double pX = tap.longitude;
+        if ( (aY>pY && bY>pY) || (aY<pY && bY<pY) || (aX<pX && bX<pX) ) {
+            return false; }
+        double m = (aY-bY) / (aX-bX);
+        double bee = (-aX) * m + aY;                // y = mx + b
+        double x = (pY - bee) / m;
+        return x > pX;
+    }
+    private boolean isPointInPolygon(LatLng tap, ArrayList<LatLng> vertices) {
+        int intersectCount = 0;
+        for(int j=0; j<vertices.size()-1; j++) {
+            if( LineIntersect(tap, vertices.get(j), vertices.get(j+1)) ) {
+                intersectCount++;
+            }
+        }
+        return (intersectCount%2) == 1; // odd = inside, even = outside;
     }
 }
