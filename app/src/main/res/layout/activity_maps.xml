@@ -23,7 +23,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Default"
             android:textColor="@color/common_signin_btn_text_dark"
-            android:id="@+id/textview1"
+            android:id="@+id/address"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true" />
         <TextView
@@ -31,7 +31,8 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Default"
-            android:id="@+id/textview2"
+            android:textColor="@color/wallet_highlighted_text_holo_dark"
+            android:id="@+id/latlng"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true" />
 
@@ -43,16 +44,40 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayout"
         android:layout_alignParentStart="true"
-        android:background="@color/wallet_holo_blue_light">
+        android:gravity="right">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Default"
-            android:id="@+id/textview3"
-            android:layout_gravity="bottom" />
-    </LinearLayout>
+            android:id="@+id/msign1"
+            android:maxWidth="1dp"
+            android:maxHeight="1dp"
+            android:padding="2dp"/>
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/msign2"
+            android:maxWidth="1dp"
+            android:maxHeight="1dp"
+            android:padding="2dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/csign"
+            android:maxWidth="1dp"
+            android:maxHeight="1dp"
+            android:padding="2dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/isign"
+            android:maxWidth="1dp"
+            android:maxHeight="1dp"
+            android:padding="2dp"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

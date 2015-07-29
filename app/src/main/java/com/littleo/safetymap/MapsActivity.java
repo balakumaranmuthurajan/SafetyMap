@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -53,6 +55,7 @@ public class MapsActivity extends FragmentActivity implements
     Circle yellowCircle;*/
     Polygon redPoly;
     Polygon greenPoly;
+
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
@@ -179,6 +182,7 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onLocationChanged(Location location) {
         Log.d(TAG, "Firing onLocationChanged");
+        ImageView iv = (ImageView) findViewById(R.id.msign1);
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         if (mapMarker != null) {
@@ -191,7 +195,7 @@ public class MapsActivity extends FragmentActivity implements
             //mapMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.));
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude())));
             Log.d(TAG, "Marker added");
-            TextView tvLatLng = (TextView) findViewById(R.id.textview2);
+            TextView tvLatLng = (TextView) findViewById(R.id.latlng);
             tvLatLng.setText(mapMarker.getPosition().latitude + "\n" + mapMarker.getPosition().longitude);
             if (mCurrentLocation != null) {
                 LocationAddress locationAddress = new LocationAddress();
@@ -228,12 +232,28 @@ public class MapsActivity extends FragmentActivity implements
                     .tilt(45)                   // Sets the tilt of the camera to 30 degrees
                     .build();                   // Creates a CameraPosition from the builder
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
-            TextView region = (TextView) findViewById(R.id.textview3);
+            //TextView region = (TextView) findViewById(R.id.textview3);
             if(isPointInPolygon(mapMarker.getPosition(), (ArrayList<LatLng>) redPoly.getPoints())){
-                region.setText("RED");
+                //region.setText("RED");
+                //ImageView iv = (ImageView) findViewById(R.id.msign1);
+                iv.setVisibility(View.VISIBLE);
+                iv.setImageResource(R.drawable.right_turn);
+                Log.d(TAG, "RED");
+                //iv.setMaxHeight(20);
+                //iv.setMaxWidth(20);
+                //iv.se
             }
-            if(isPointInPolygon(mapMarker.getPosition(), (ArrayList<LatLng>) greenPoly.getPoints())){
-                region.setText("GREEN");
+            else if(isPointInPolygon(mapMarker.getPosition(), (ArrayList<LatLng>) greenPoly.getPoints())){
+                //region.setText("GREEN");
+                Log.d(TAG,"GREEN");
+                //ImageView iv = (ImageView) findViewById(R.id.msign1);
+                iv.setVisibility(View.VISIBLE);
+                iv.setImageResource(R.drawable.common_signin_btn_icon_dark);
+            }
+            else{
+                //region.setText("NOTHING");
+                //ImageView iv = (ImageView) findViewById(R.id.msign1);
+                iv.setVisibility(View.INVISIBLE);
             }
         }
         else {
@@ -276,6 +296,7 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onMarkerDragEnd(Marker marker) {
         Log.d(TAG, "Drag stopped ");
+        ImageView iv = (ImageView) findViewById(R.id.msign1);
         //Location dragLocation;
         //dragLocation = null;
         //dragLocation.setLatitude(marker.getPosition().latitude);
@@ -287,7 +308,7 @@ public class MapsActivity extends FragmentActivity implements
                 .build();                   // Creates a CameraPosition from the builder
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
         if (marker != null) {
-            TextView tvLatLng = (TextView) findViewById(R.id.textview2);
+            TextView tvLatLng = (TextView) findViewById(R.id.latlng);
             tvLatLng.setText(marker.getPosition().latitude+"\n"+marker.getPosition().longitude);
             LocationAddress locationAddress = new LocationAddress();
             locationAddress.getAddressFromLocation(marker.getPosition().latitude, marker.getPosition().longitude,
@@ -319,12 +340,28 @@ public class MapsActivity extends FragmentActivity implements
             Toast.makeText(getBaseContext(), "YELLOW", Toast.LENGTH_LONG).show();
             region.setText("YELLOW");
         }*/
-        TextView region = (TextView) findViewById(R.id.textview3);
+        //TextView region = (TextView) findViewById(R.id.textview3);
         if(isPointInPolygon(mapMarker.getPosition(), (ArrayList<LatLng>) redPoly.getPoints())){
-            region.setText("RED");
+            //region.setText("RED");
+            Log.d(TAG,"RED");
+            //ImageView iv = (ImageView) findViewById(R.id.msign1);
+            iv.setVisibility(View.VISIBLE);
+            iv.setImageResource(R.drawable.right_turn);
+            //iv.setMaxHeight(20);
+            //iv.setMaxWidth(20);
+            //iv.se
         }
-        if(isPointInPolygon(mapMarker.getPosition(), (ArrayList<LatLng>) greenPoly.getPoints())){
-            region.setText("GREEN");
+        else if(isPointInPolygon(mapMarker.getPosition(), (ArrayList<LatLng>) greenPoly.getPoints())){
+            //region.setText("GREEN");
+            Log.d(TAG,"GREEN");
+            //ImageView iv = (ImageView) findViewById(R.id.msign1);
+            iv.setVisibility(View.VISIBLE);
+            iv.setImageResource(R.drawable.common_signin_btn_icon_dark);
+        }
+        else{
+            //region.setText("NOTHING");
+            //ImageView iv = (ImageView) findViewById(R.id.msign1);
+            iv.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -341,7 +378,7 @@ public class MapsActivity extends FragmentActivity implements
                 default:
                     locationAddress = null;
             }
-            TextView tvLocation = (TextView) findViewById(R.id.textview1);
+            TextView tvLocation = (TextView) findViewById(R.id.address);
             tvLocation.setText(locationAddress);
         }
     }
