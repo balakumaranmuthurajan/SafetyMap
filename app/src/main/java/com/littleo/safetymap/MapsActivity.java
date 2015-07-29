@@ -151,7 +151,7 @@ public class MapsActivity extends FragmentActivity implements
                 .tilt(45)                   // Sets the tilt of the camera to 30 degrees
                 .build();                   // Creates a CameraPosition from the builder
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
-
+        
         /*mCurrentLocation = googleMap.getMyLocation();
         if (mCurrentLocation != null) {
             LocationAddress locationAddress = new LocationAddress();
